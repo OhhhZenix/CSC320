@@ -1,0 +1,32 @@
+start
+    Declarations 
+        string firstName
+        string lastName
+        string streetAddress
+        string city
+        num zipcode
+    
+    output "Let's make a ficitonal character."
+
+    output "What is their first name?"
+    input firstName
+
+    output "What is their last name?"
+    input lastName
+
+    output "What is their street address?"
+    input streetAddress
+
+    output "What is their city?"
+    input city
+
+    output "What is their zip code?"
+    input zipcode
+
+    output "Here are the info about your ficitional character."
+    output "First Name: " + firstName
+    output "Last Name: " + lastName
+    output "Street Address: " + streetAddress
+    output "City: " + city
+    output "Zipcode: " + zipcode
+end

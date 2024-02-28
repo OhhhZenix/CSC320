@@ -3,7 +3,7 @@ import java.util.Scanner;
 public class CharacterPrinter {
 
   public static void main(String[] args) {
-    System.out.println("Let's make a ficitonal character.");
+    System.out.println("Let's make a fictional character.");
 
     Scanner userInput = new Scanner(System.in);
 
@@ -20,15 +20,15 @@ public class CharacterPrinter {
     String city = userInput.nextLine();
 
     System.out.println("What is their zip code?");
-    int zipcode = userInput.nextInt();
+    int zipCode = userInput.nextInt();
 
     userInput.close();
 
-    System.out.println("Here are the info about your ficitional character.");
+    System.out.println("Here are the info about your fictional character.");
     System.out.println("First Name: " + firstName);
     System.out.println("Last Name: " + lastName);
     System.out.println("Street Address: " + streetAddress);
     System.out.println("City: " + city);
-    System.out.println("Zipcode: " + zipcode);
+    System.out.println("Zipcode: " + zipCode);
   }
 }

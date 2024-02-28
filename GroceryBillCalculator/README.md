@@ -1,7 +1,7 @@
 # Grocery Bill Calculator
 A simple java program to calculate an overview of grocery bills in terms of weekly and monthly.
 
-## Overiew
+## Overview
 This Java program allows users to calculate the average weekly and monthly grocery bill for a family of four, although it could be for more or fewer members. It prompts the user to input a discount coupon amount as a decimal (e.g., 0.10 for 10%). If the entered value exceeds 100% or is less than or equal to zero, the program automatically sets the discount to 10%.
 
 The program then prompts the user for the grocery bills for weeks 1 to 4. It calculates both the monthly and weekly averages for groceries. The monthly total and weekly average are displayed both with and without the coupon.

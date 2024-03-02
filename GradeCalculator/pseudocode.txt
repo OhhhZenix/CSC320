@@ -1,0 +1,34 @@
+start
+    Declarations
+        num GRADE_ENTRIES = 10
+        num currentGrade = 0
+        num totalGrade = 0
+        num avgGrade = 0
+        num maxGrade = 2.2250738585072014E-308
+        num minGrade = 1.7976931348623157E308
+    
+    for num i = 0 to GRADE_ENTRIES step 1
+        output "Grade Entry #" + (i + 1)
+        while input currentGrade is not num
+            output "Invalid input, please try again! use a floating-point number to make an entry."
+            output "Grade Entry #" + (i + 1)
+        endWhile
+
+        totalGrade = totalGrade + currentGrade
+
+        if currentGrade > maxGrade then
+            maxGrade = currentGrade
+        endIf
+
+        if currentGrade < minGrade then
+            minGrade = currentGrade
+        endIf
+    endFor
+
+    avgGrade = totalGrade / GRADE_ENTRIES
+
+    output "Statistics:"
+    output "Average Grade: " + avgGrade
+    output "Maximum Grade: " + maxGrade
+    output "Minimum Grade: " + minGrade
+end 

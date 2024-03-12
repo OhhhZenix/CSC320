@@ -20,7 +20,7 @@ After receiving the input, the application displays the entered information.
 5. Then enter the following prompt for last name, street address, city, and zip code.
 6. View the respond returned based on given input.
 
-## Example
+## Examples
 ![An example of the program running and usage](./example.png)
 
 ## Note

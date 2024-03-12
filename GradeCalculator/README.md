@@ -11,7 +11,7 @@ This Java program calculates important statistics for grades entered by the user
 4. Follow the prompts to enter ten floating-point grades when prompted. Ensure that each grade is entered as a valid floating-point number.
 5. After entering all grades, the program will display the calculated statistics, including the average, maximum, and minimum grades.
 
-## Example
+## Examples
 ![An example of the program running and usage](./example.png)
 
 ## Note

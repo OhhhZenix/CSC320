@@ -14,7 +14,7 @@ The program then prompts the user for the grocery bills for weeks 1 to 4. It cal
 5. Enter the grocery bills for weeks 1 to 4 when prompted.
 6. View the calculated monthly total and weekly averages, both with and without the coupon.
 
-## Example
+## Examples
 ![An example of the program running and usage](./example.png)
 
 ## Note

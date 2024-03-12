@@ -1,0 +1,34 @@
+start
+    Declarations
+        num DAYS_PER_WEEK = 7
+        string daysOfWeek[DAYS_PER_WEEK] = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+        num tempsOfWeek[DAYS_PER_WEEK] = [79.1, 60.3, 30.4, 40.5, 61.5, 72.2, 82.2]
+        bool isValidInput = false
+        num temp = 0
+        num totalTemp = 0.0
+        num weeklyAvgTemp = 0.0
+        num indexByDay
+        string userInput
+
+    do
+        output "Enter the day of the week (Monday through Sunday) or type 'week' for weekly average."
+        input userInput
+
+        if userInput is "Week" then
+            for num i = 0 to DAYS_PER_WEEK step 1
+                temp = tempsOfWeek[i]
+                totalTemp = totalTemp + temp
+                output "Day: " + daysOfWeek[i] + ", Temperature: " + temp + " degrees"
+            endFor
+            weeklyAvgTemp = totalTemp / DAYS_PER_WEEK
+            output "Weekly Average Temperature: " + weeklyAvgTemp + " degrees"
+            isValidInput = true
+        else if userInput in daysOfWeek then 
+            indexByDay = daysOfWeek.indexOf(userInput)
+            output "Day: " + daysOfWeek[indexByDay] + ", Temperature: " + tempsOfWeek[indexByDay] + " degrees"
+            isValidInput = true
+        else
+            output "Invalid input. Try again."
+        endIf
+    while !isValidInput
+end

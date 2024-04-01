@@ -2,6 +2,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.ListIterator;
 import java.util.Scanner;
 
@@ -212,7 +214,7 @@ public class VehicleDealership {
     }
   }
 
-  public static int getMenuOption(Scanner scanner, int[] options, String... messages) {
+  public static int getMenuOption(Scanner scanner, List<Integer> options, String... messages) {
     int input = getHandledIntInput(scanner, messages);
 
     for (int option : options) {
@@ -241,7 +243,7 @@ public class VehicleDealership {
     try (Scanner scanner = new Scanner(System.in)) {
       // Start Menu
       while (true) {
-        int startMenuInput = getHandledIntInput(scanner,
+        int startMenuInput = getMenuOption(scanner, Arrays.asList(0, 1, 2, 3),
             "Start Menu Options (Enter a number below)",
             "0. Quit app",
             "1. Create a new inventory",
@@ -250,11 +252,15 @@ public class VehicleDealership {
         if (startMenuInput == 0) {
           System.out.println("Thank you for using the Vehicle Dealership app!");
           break;
-        } else if (startMenuInput == 1) {
+        }
+
+        if (startMenuInput == 1) {
           System.out.println("Creating new inventory...");
           inventory = new VehicleInventory();
           System.out.println("Successfully created inventory...");
-        } else if (startMenuInput == 2) {
+        }
+
+        if (startMenuInput == 2) {
           boolean shouldReturnStartMenu = false;
 
           // Load Inventory Menu
@@ -283,14 +289,11 @@ public class VehicleDealership {
           if (shouldReturnStartMenu) {
             continue;
           }
-        } else {
-          System.out.println("Invalid options. Try again!");
-          continue;
         }
 
         // Main Menu
         while (true) {
-          int mainMenuInput = getHandledIntInput(scanner,
+          int mainMenuInput = getMenuOption(scanner, Arrays.asList(0, 1, 2, 3, 4),
               "Main Menu Options (Enter a number below)",
               "0. Return to Start Menu",
               "1. View inventory",
@@ -319,10 +322,13 @@ public class VehicleDealership {
             }
 
             break;
-          } else if (mainMenuInput == 1) {
+          }
+
+          if (mainMenuInput == 1) {
             inventory.display();
-            continue;
-          } else if (mainMenuInput == 2) {
+          }
+
+          if (mainMenuInput == 2) {
             while (true) {
               String vin = getHandledStringInput(scanner,
                   "Enter the vehicle's VIN number or type 'q' to return to Main Menu.");
@@ -392,8 +398,9 @@ public class VehicleDealership {
               System.out.println(vehicle.summary());
               break;
             }
-            continue;
-          } else if (mainMenuInput == 3) {
+          }
+
+          if (mainMenuInput == 3) {
             int index = getVehicleIndex(scanner, inventory,
                 "Enter the vehicle's index you'd like to remove or or type '-1' to return to Main Menu.");
 
@@ -406,7 +413,9 @@ public class VehicleDealership {
             System.out.println("The following vehicle has been removed:");
             System.out.println(vehicle.summary());
             continue;
-          } else if (mainMenuInput == 4) {
+          }
+
+          if (mainMenuInput == 4) {
             int index = getVehicleIndex(scanner, inventory,
                 "Enter the vehicle's index you'd like to modify or or type '-1' to return to Main Menu.");
 
@@ -431,18 +440,12 @@ public class VehicleDealership {
               if (modifyMenuInput == 0) {
                 System.out.println("Returning to Main Menu...");
                 break;
-              } else if (modifyMenuInput == 1) {
+              }
+
+              if (modifyMenuInput == 1) {
                 System.out.println(vehicle.summary());
-                continue;
-              } else {
-                System.out.println("Invalid options. Try again!");
-                continue;
               }
             }
-            continue;
-          } else {
-            System.out.println("Invalid options. Try again!");
-            continue;
           }
         }
       }

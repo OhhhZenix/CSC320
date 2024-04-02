@@ -1,187 +1,8 @@
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Scanner;
 
 public class VehicleDealership {
-
-  public static class Vehicle {
-    private String vin;
-    private String make;
-    private String model;
-    private String color;
-    private int year;
-    private int mileage;
-
-    public Vehicle() {
-      this.vin = "??? VIN";
-      this.make = "??? Model";
-      this.model = "??? Make";
-      this.color = "??? Color";
-      this.year = 0;
-      this.mileage = 0;
-    }
-
-    public Vehicle(String vin, String make, String model, String color, int year, int mileage) {
-      this.vin = vin;
-      this.make = make;
-      this.model = model;
-      this.color = color;
-      this.year = year;
-      this.mileage = mileage;
-    }
-
-    public String getVIN() {
-      return this.vin;
-    }
-
-    public void setVIN(String vin) {
-      this.vin = vin;
-    }
-
-    public String getMake() {
-      return this.make;
-    }
-
-    public void setMake(String make) {
-      this.make = make;
-    }
-
-    public String getModel() {
-      return this.model;
-    }
-
-    public void setModel(String model) {
-      this.model = model;
-    }
-
-    public String getColor() {
-      return this.color;
-    }
-
-    public void setColor(String color) {
-      this.color = color;
-    }
-
-    public int getYear() {
-      return this.year;
-    }
-
-    public void setYear(int year) throws Exception {
-      if (year < 0)
-        throw new Exception("Invalid input value. Year cannot be less than 0.");
-
-      this.year = year;
-    }
-
-    public int getMileage() {
-      return this.mileage;
-    }
-
-    public void setMileage(int mileage) throws Exception {
-      if (mileage < 0)
-        throw new Exception("Invalid input value. Mileage cannot be less than 0.");
-
-      this.mileage = mileage;
-    }
-
-    public String summary() {
-      return String.format(
-          "%s %s %s %s with %s miles (VIN: %s).",
-          this.year, this.color, this.make, this.model, this.mileage, this.vin);
-    }
-
-    public static Vehicle deserialize(String data) {
-      String[] splitData = data.split(";");
-      try {
-        String vin = splitData[0];
-        String make = splitData[1];
-        String model = splitData[2];
-        String color = splitData[3];
-        int year = Integer.parseInt(splitData[4]);
-        int mileage = Integer.parseInt(splitData[5]);
-        return new Vehicle(vin, make, model, color, year, mileage);
-      } catch (Exception e) {
-        System.out.println("Failed to read data.");
-        e.printStackTrace();
-      }
-      return new Vehicle();
-    }
-
-    public String serialize() {
-      return String.format(
-          "%s;%s;%s;%s;%s;%s",
-          this.vin, this.make, this.model, this.color, this.year, this.mileage);
-    }
-  }
-
-  public static class VehicleInventory {
-    private ArrayList<Vehicle> vehicles;
-
-    public VehicleInventory() {
-      this.vehicles = new ArrayList<>();
-    }
-
-    public VehicleInventory(ArrayList<Vehicle> vehicles) {
-      this.vehicles = vehicles;
-    }
-
-    public boolean exists(int index) {
-      return (index >= 0) && (index < this.vehicles.size());
-    }
-
-    public void add(Vehicle vehicle) {
-      this.vehicles.add(vehicle);
-    }
-
-    public Vehicle remove(int index) {
-      return this.vehicles.remove(index);
-    }
-
-    public Vehicle get(int index) {
-      return this.vehicles.get(index);
-    }
-
-    public void display() {
-      if (this.vehicles.isEmpty()) {
-        System.out.println("The inventory is empty!");
-        return;
-      }
-
-      System.out.println("The inventory consist of the following vehicles:");
-      ListIterator<Vehicle> vehicleIterator = this.vehicles.listIterator();
-      while (vehicleIterator.hasNext()) {
-        System.out
-            .println(String.format("%s. %s", vehicleIterator.nextIndex(), vehicleIterator.next().summary()));
-      }
-    }
-
-    public static VehicleInventory deserialize(String fileName) throws Exception {
-      try (Scanner scanner = new Scanner(new FileInputStream(fileName))) {
-        ArrayList<Vehicle> vehicles = new ArrayList<>();
-        while (scanner.hasNextLine()) {
-          vehicles.add(Vehicle.deserialize(scanner.nextLine()));
-        }
-        return new VehicleInventory(vehicles);
-      } catch (Exception e) {
-        throw new Exception("Failed to read file.");
-      }
-    }
-
-    public void serialize(String fileName) throws Exception {
-      try (PrintWriter writer = new PrintWriter(new FileOutputStream(fileName))) {
-        for (Vehicle vehicle : this.vehicles) {
-          writer.println(vehicle.serialize());
-        }
-      } catch (Exception e) {
-        throw new Exception("Failed to write file.");
-      }
-    }
-  }
 
   public static String getHandledStringInput(Scanner scanner, String... messages) {
     for (String message : messages) {
@@ -190,12 +11,11 @@ public class VehicleDealership {
 
     String input = scanner.nextLine().trim();
 
-    if (input.isBlank()) {
-      System.out.println("Empty input. Try again!");
-      return getHandledStringInput(scanner, messages);
-    }
+    if (!input.isBlank())
+      return input;
 
-    return input;
+    System.out.println("Empty input. Try again!");
+    return getHandledStringInput(scanner, messages);
   }
 
   public static int getHandledIntInput(Scanner scanner, String... messages) {
@@ -230,12 +50,12 @@ public class VehicleDealership {
   public static int getVehicleIndex(Scanner scanner, VehicleInventory inventory, String... messages) {
     int index = getHandledIntInput(scanner, messages);
 
-    if (!inventory.exists(index) && index != -1) {
-      System.out.println("The index provided does not exists. Try again!");
-      return getVehicleIndex(scanner, inventory, messages);
+    if (index == -1 || inventory.exists(index)) {
+      return index;
     }
 
-    return index;
+    System.out.println("The index provided does not exists. Try again!");
+    return getVehicleIndex(scanner, inventory, messages);
   }
 
   public static void main(String[] args) {
@@ -424,7 +244,7 @@ public class VehicleDealership {
               break;
             }
 
-            Vehicle vehicle = inventory.get(index);
+            Vehicle selectedVehicle = inventory.get(index);
             while (true) {
               int modifyMenuInput = getHandledIntInput(scanner,
                   String.format("Modification Menu Options (Enter a number below - Selected Index: %s)", index),
@@ -443,7 +263,126 @@ public class VehicleDealership {
               }
 
               if (modifyMenuInput == 1) {
-                System.out.println(vehicle.summary());
+                System.out.println(selectedVehicle.summary());
+              }
+
+              if (modifyMenuInput == 2) {
+                String oldVIN = selectedVehicle.getVIN();
+                String newVIN = getHandledStringInput(scanner, String.format(
+                    "Enter a new VIN for the Vehicle Index %s or 'q' to return to Modification Menu.", index));
+
+                if (newVIN.equalsIgnoreCase("q")) {
+                  System.out.println("Returning to Modification Menu...");
+                  continue;
+                }
+
+                selectedVehicle.setVIN(newVIN);
+                System.out.println(
+                    String.format("The VIN for the Vehicle Index %s has been changed from %s to %s.", index, oldVIN,
+                        newVIN));
+              }
+
+              if (modifyMenuInput == 3) {
+                String oldMake = selectedVehicle.getMake();
+                String newMake = getHandledStringInput(scanner, String.format(
+                    "Enter a new make for the Vehicle Index %s or 'q' to return to Modification Menu.", index));
+
+                if (newMake.equalsIgnoreCase("q")) {
+                  System.out.println("Returning to Modification Menu...");
+                  continue;
+                }
+
+                selectedVehicle.setMake(newMake);
+                System.out.println(
+                    String.format("The make for the Vehicle Index %s has been changed from %s to %s.", index, oldMake,
+                        newMake));
+              }
+
+              if (modifyMenuInput == 4) {
+                String oldModel = selectedVehicle.getModel();
+                String model = getHandledStringInput(scanner,
+                    String.format(
+                        "Enter a new model for the Vehicle Index %s or 'q' to return to Modification Menu.", index));
+
+                if (model.equalsIgnoreCase("q")) {
+                  System.out.println("Returning to Modification Menu...");
+                  continue;
+                }
+
+                selectedVehicle.setModel(model);
+                System.out.println(
+                    String.format("The model for the Vehicle Index %s has been changed from %s to %s.", index, oldModel,
+                        model));
+              }
+
+              if (modifyMenuInput == 5) {
+                String oldColor = selectedVehicle.getColor();
+                String newColor = getHandledStringInput(scanner,
+                    String.format(
+                        "Enter a new color for the Vehicle Index %s or 'q' to return to Modification Menu.", index));
+
+                if (newColor.equalsIgnoreCase("q")) {
+                  System.out.println("Returning to Modification Menu...");
+                  continue;
+                }
+
+                selectedVehicle.setColor(newColor);
+                System.out.println(
+                    String.format(
+                        "The color for the Vehicle Index %s has been changed from %s to %s.", index, oldColor,
+                        newColor));
+              }
+
+              if (modifyMenuInput == 6) {
+                int oldYear = selectedVehicle.getYear();
+                int newYear;
+
+                while (true) {
+                  newYear = getHandledIntInput(scanner, String.format(
+                      "Enter a new year for the Vehicle Index %s or '-1' to return to Modification Menu.", index));
+
+                  if (newYear > -1)
+                    break;
+
+                  System.out.println("Invalid input value. Year cannot be less than 0. Try again!");
+                }
+
+                if (newYear == -1) {
+                  System.out.println("Returning to Modification Menu...");
+                  continue;
+                }
+
+                selectedVehicle.setYear(newYear);
+                System.out.println(
+                    String.format(
+                        "The year for the Vehicle Index %s has been changed from %s to %s.", index, oldYear,
+                        newYear));
+              }
+
+              if (modifyMenuInput == 7) {
+                int oldMileage = selectedVehicle.getMileage();
+                int newMileage;
+
+                while (true) {
+                  newMileage = getHandledIntInput(scanner, String.format(
+                      "Enter a new mileage for the Vehicle Index %s or '-1' to return to Modification Menu.", index));
+
+                  if (newMileage > -1)
+                    break;
+
+                  System.out.println("Invalid input value. Mileage cannot be less than 0. Try again!");
+                }
+
+                if (newMileage == -1) {
+                  System.out.println("Returning to Modification Menu...");
+                  continue;
+                }
+
+                selectedVehicle.setMileage(newMileage);
+                System.out.println(
+                    String.format(
+                        "The mileage for the Vehicle Index %s has been changed from %s to %s.", index, oldMileage,
+                        newMileage));
               }
             }
           }

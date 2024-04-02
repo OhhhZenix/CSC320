@@ -101,7 +101,7 @@ public class VehicleDealership {
               break;
             } catch (Exception e) {
               System.out
-                  .println(String.format("Failed to create inventory from %s. Try again.", loadInventoryMenuInput));
+                  .println(String.format("Failed to create inventory from %s. Try again!", loadInventoryMenuInput));
               continue;
             }
           }

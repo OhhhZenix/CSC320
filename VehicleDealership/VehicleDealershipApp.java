@@ -4,6 +4,7 @@ public class VehicleDealershipApp {
 
     private Action action;
     private VehicleInventory inventory;
+    private int selectedVehicleIndex;
 
     private enum Action {
         START_MENU,
@@ -15,6 +16,7 @@ public class VehicleDealershipApp {
     public VehicleDealershipApp() {
         this.action = Action.START_MENU;
         this.inventory = null;
+        this.selectedVehicleIndex = -1;
     }
 
     private String getInput(Scanner scanner, String... messages) {
@@ -207,15 +209,179 @@ public class VehicleDealershipApp {
                     return Action.MAIN_MENU;
                 }
             case 4:
-                return Action.MOD_MENU;
+                while (true) {
+                    int vehicleIndex = getIntInput(scanner,
+                            "Enter the Vehicle Index of the vehicle you'd like to modify or '-1' to return to Main Menu.");
+
+                    if (vehicleIndex == -1) {
+                        System.out.println("Returning to Main Menu...");
+                        return Action.MAIN_MENU;
+                    }
+
+                    if (!this.inventory.exists(vehicleIndex)) {
+                        System.out.println("Vehicle Index provided does not exists. Try again!");
+                        continue;
+                    }
+
+                    this.selectedVehicleIndex = vehicleIndex;
+                    return Action.MOD_MENU;
+                }
             default:
                 System.out.println("Invalid option. Try again!");
                 return mainMenu(scanner);
         }
     }
 
-    private Action modMenu() {
-        return Action.MOD_MENU;
+    private Action modMenu(Scanner scanner) {
+        System.out.println(
+                String.format("The Vehicle Index you current have selected is %s.", this.selectedVehicleIndex));
+        int selectedOption = getIntInput(scanner,
+                "Modification Menu (Enter a number below to select the option)",
+                "0. Return to Main Menu",
+                "1. Display vehicle info",
+                "2. Edit VIN",
+                "3. Edit Make",
+                "4. Edit Model",
+                "5. Edit Color",
+                "6. Edit Year",
+                "7. Edit Milage");
+
+        Vehicle selectedVehicle = this.inventory.get(this.selectedVehicleIndex);
+        switch (selectedOption) {
+            case 0:
+                System.out.println("Returning to Main Menu...");
+                return Action.MAIN_MENU;
+            case 1:
+                System.out.println(selectedVehicle.summary());
+                return Action.MOD_MENU;
+            case 2:
+                String oldVIN = selectedVehicle.getVIN();
+                String newVIN = getInput(scanner, String.format(
+                        "Enter a new VIN for the Vehicle Index %s or 'q' to return to Modification Menu.",
+                        this.selectedVehicleIndex));
+
+                if (newVIN.equalsIgnoreCase("q")) {
+                    System.out.println("Returning to Modification Menu...");
+                    return Action.MOD_MENU;
+                }
+
+                selectedVehicle.setVIN(newVIN);
+                System.out.println(
+                        String.format("The VIN for the Vehicle Index %s has been changed from %s to %s.",
+                                this.selectedVehicleIndex, oldVIN,
+                                newVIN));
+                return Action.MOD_MENU;
+            case 3:
+                String oldMake = selectedVehicle.getMake();
+                String newMake = getInput(scanner, String.format(
+                        "Enter a new make for the Vehicle Index %s or 'q' to return to Modification Menu.",
+                        this.selectedVehicleIndex));
+
+                if (newMake.equalsIgnoreCase("q")) {
+                    System.out.println("Returning to Modification Menu...");
+                    return Action.MOD_MENU;
+
+                }
+
+                selectedVehicle.setMake(newMake);
+                System.out.println(
+                        String.format("The make for the Vehicle Index %s has been changed from %s to %s.",
+                                this.selectedVehicleIndex,
+                                oldMake,
+                                newMake));
+                return Action.MOD_MENU;
+            case 4:
+                String oldModel = selectedVehicle.getModel();
+                String model = getInput(scanner,
+                        String.format(
+                                "Enter a new model for the Vehicle Index %s or 'q' to return to Modification Menu.",
+                                this.selectedVehicleIndex));
+
+                if (model.equalsIgnoreCase("q")) {
+                    System.out.println("Returning to Modification Menu...");
+                    return Action.MOD_MENU;
+                }
+
+                selectedVehicle.setModel(model);
+                System.out.println(
+                        String.format("The model for the Vehicle Index %s has been changed from %s to %s.",
+                                this.selectedVehicleIndex,
+                                oldModel,
+                                model));
+                return Action.MOD_MENU;
+            case 5:
+                String oldColor = selectedVehicle.getColor();
+                String newColor = getInput(scanner,
+                        String.format(
+                                "Enter a new color for the Vehicle Index %s or 'q' to return to Modification Menu.",
+                                this.selectedVehicleIndex));
+
+                if (newColor.equalsIgnoreCase("q")) {
+                    System.out.println("Returning to Modification Menu...");
+                    return Action.MOD_MENU;
+                }
+
+                selectedVehicle.setColor(newColor);
+                System.out.println(
+                        String.format(
+                                "The color for the Vehicle Index %s has been changed from %s to %s.",
+                                this.selectedVehicleIndex, oldColor,
+                                newColor));
+                return Action.MOD_MENU;
+            case 6:
+                while (true) {
+                    int oldYear = selectedVehicle.getYear();
+                    int newYear = getIntInput(scanner, String.format(
+                            "Enter a new year for the Vehicle Index %s or '-1' to return to Modification Menu.",
+                            this.selectedVehicleIndex));
+
+                    if (newYear == -1) {
+                        System.out.println("Returning to Modification Menu...");
+                        return Action.MOD_MENU;
+                    }
+
+                    if (newYear < -1) {
+                        System.out.println("Invalid input value. Year cannot be less than 0. Try again!");
+                        continue;
+                    }
+
+                    selectedVehicle.setYear(newYear);
+                    System.out.println(
+                            String.format(
+                                    "The year for the Vehicle Index %s has been changed from %s to %s.",
+                                    this.selectedVehicleIndex, oldYear,
+                                    newYear));
+                    return Action.MOD_MENU;
+                }
+            case 7:
+                while (true) {
+                    int oldMileage = selectedVehicle.getMileage();
+                    int newMileage = getIntInput(scanner, String.format(
+                            "Enter a new mileage for the Vehicle Index %s or '-1' to return to Modification Menu.",
+                            this.selectedVehicleIndex));
+
+                    if (newMileage == -1) {
+                        System.out.println("Returning to Modification Menu...");
+                        return Action.MOD_MENU;
+                    }
+
+                    if (newMileage < -1) {
+                        System.out.println("Invalid input value. Mileage cannot be less than 0. Try again!");
+                        continue;
+                    }
+
+                    selectedVehicle.setMileage(newMileage);
+                    System.out.println(
+                            String.format(
+                                    "The mileage for the Vehicle Index %s has been changed from %s to %s.",
+                                    this.selectedVehicleIndex, oldMileage,
+                                    newMileage));
+                    return Action.MOD_MENU;
+                }
+            default:
+                System.out.println("Invalid option. Try again!");
+                return mainMenu(scanner);
+        }
     }
 
     public void run() {
@@ -231,7 +397,7 @@ public class VehicleDealershipApp {
                         this.action = mainMenu(scanner);
                         break;
                     case MOD_MENU:
-                        this.action = modMenu();
+                        this.action = modMenu(scanner);
                         break;
                     default:
                         break;

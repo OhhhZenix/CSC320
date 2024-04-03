@@ -20,8 +20,9 @@ public class VehicleInventory {
         return (index >= 0) && (index < this.vehicles.size());
     }
 
-    public void add(Vehicle vehicle) {
+    public Vehicle add(Vehicle vehicle) {
         this.vehicles.add(vehicle);
+        return vehicle;
     }
 
     public Vehicle remove(int index) {

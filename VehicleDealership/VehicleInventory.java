@@ -70,5 +70,4 @@ public class VehicleInventory {
             throw new Exception("Failed to write file.");
         }
     }
-
 }

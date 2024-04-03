@@ -234,7 +234,7 @@ public class VehicleDealershipApp {
 
     private Action modMenu(Scanner scanner) {
         System.out.println(
-                String.format("The Vehicle Index you current have selected is %s.", this.selectedVehicleIndex));
+                String.format("You currently have %s selected as the Vehicle Index.", this.selectedVehicleIndex));
         int selectedOption = getIntInput(scanner,
                 "Modification Menu (Enter a number below to select the option)",
                 "0. Return to Main Menu",

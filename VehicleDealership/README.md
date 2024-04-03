@@ -12,15 +12,19 @@ This Java program allows the user to manage a vehicle dealership on a very basic
 5. When prompted input option given at a given menu to interact with it.
 
 ## Examples
-Start Menu
+Start Menu <br>
 ![](./start_menu_example.png)
-Main Menu
+
+Main Menu <br>
 ![](./main_menu_example.png)
-Modification Menu
+
+Modification Menu <br>
 ![](./mod_menu_example.png)
-Create Inventory
+
+Create Inventory <br>
 ![](./create_inventory_example.png)
-Load Inventory
+
+Load Inventory <br>
 ![](./load_inventory_example.png)
 
 ## Note

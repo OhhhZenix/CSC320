@@ -3,53 +3,57 @@ import java.util.Scanner;
 
 public class GroceryBillCalculator {
 
+  public static double getDoubleInput(Scanner scanner, String... messages) {
+    for (String message : messages) {
+      System.out.println(message);
+    }
+
+    try {
+      return Double.parseDouble(scanner.nextLine().trim());
+    } catch (Exception e) {
+      System.out.println("Invalid input type. Try again!");
+      return getDoubleInput(scanner, messages);
+    }
+  }
+
   public static void main(String[] args) {
-    DecimalFormat decimalFormatter = new DecimalFormat("#.00");
-    Scanner scanner = new Scanner(System.in);
+    DecimalFormat currencyFormatter = new DecimalFormat("#.00");
+    DecimalFormat percentFormatter = new DecimalFormat("##.##%");
     System.out.println("Welcome to the Grocery Bill Calculator!");
 
-    System.out.print("Lets begin! Enter a coupon amount amount as a decimal (example, .10): ");
-    double discount = scanner.nextDouble();
-    if (discount > 1.0 || discount <= 0) {
-      discount = 0.1;
+    try (Scanner scanner = new Scanner(System.in)) {
+      double discount = getDoubleInput(scanner, "Enter a coupon discount as decimal (eg. 0.10).");
+      if (discount > 1.0 || discount <= 0) {
+        discount = 0.10;
+        System.out.println("Your input has either exceeded 100% or is less than or equal to 0%.");
+        System.out.println("Thus, the system has assigned default coupon discount of 10%.");
+      } else {
+        System.out.println(
+            String.format("The coupon discount has been set to %s.", percentFormatter.format(discount)));
+      }
+
+      final int WEEKS_IN_MONTH = 4;
+      double[] weeklyBills = new double[WEEKS_IN_MONTH];
+      double totalBill = 0.0;
+      System.out.println("Now, let's enter grocery bills for weeks 1-4.");
+      for (int i = 0; i < WEEKS_IN_MONTH; i++) {
+        weeklyBills[i] = getDoubleInput(scanner, String.format("Enter your grocery bill for week %s.", (i + 1)));
+        totalBill += weeklyBills[i];
+      }
+
       System.out.println(
-          "The discount you entered exceeds 100% or is less than or equal to zero. Thus, the discount is set to 10%.");
+          String.format("The monthly total bill without coupon discount is $%s.", currencyFormatter.format(totalBill)));
+      System.out.println(String.format("The weekly average bill without coupon discount is $%s.",
+          currencyFormatter.format(totalBill / 4)));
+
+      double totalBillWithDiscount = totalBill * (1 - discount);
+      System.out.println(
+          String.format("The monthly total bill with coupon discount is $%s.",
+              currencyFormatter.format(totalBillWithDiscount)));
+      System.out.println(String.format("The weekly average bill with coupon discount is $%s.",
+          currencyFormatter.format(totalBillWithDiscount / 4)));
     }
 
-    double[] bills = new double[4];
-    System.out.println("\nNow let's enter your grocery bill from weeks 1-4.");
-    for (int i = 0; i < 4; i++) {
-      System.out.print("Enter your grocery bill for week " + (i + 1) + ": ");
-      bills[i] = scanner.nextDouble();
-    }
-
-    System.out.println("\nHere is a view of your grocery summary.");
-
-    double total = 0;
-    for (double bill : bills) {
-      total += bill;
-    }
-    double avgWeeklyWithoutCoupon = total / 4;
-    double avgMonthlyWithoutCoupon = avgWeeklyWithoutCoupon * 4;
-    System.out.println(
-        "Weekly total without coupon: $" + decimalFormatter.format(avgWeeklyWithoutCoupon));
-    System.out.println(
-        "Monthly total without coupon: $" + decimalFormatter.format(avgMonthlyWithoutCoupon));
-
-    double totalWithCoupon = total * (1 - discount);
-    double avgWeeklyWithCoupon = totalWithCoupon / 4;
-    double avgMonthlyWithCoupon = avgWeeklyWithCoupon * 4;
-    System.out.println(
-        "Weekly total with coupon("
-            + decimalFormatter.format(discount * 100)
-            + "% discount): $"
-            + decimalFormatter.format(avgWeeklyWithCoupon));
-    System.out.println(
-        "Monthly total with coupon("
-            + decimalFormatter.format(discount * 100)
-            + "% discount): $"
-            + decimalFormatter.format(avgMonthlyWithCoupon));
-
-    scanner.close();
+    System.out.println("Thank you for using the Grocery Bill Calculator!");
   }
 }

@@ -1,46 +1,38 @@
 start
     Declarations
+        num WEEKS_IN_MONTH = 4
         num discount
-        num bills[4]
-        num total
-        num avgWeeklyWithoutCoupon
-        num avgMonthlyWithoutCoupon
-        num totalWithCoupon
-        num avgWeeklyWithCoupon
-        num avgMonthlyWithCoupon
+        num weeklyBills[WEEKS_IN_MONTH]
+        num totalBills
+        num totalBillsWithDiscount
     
     output "Welcome to the Grocery Bill Calculator!"
 
-    output "Lets begin! Enter a coupon amount amount as a decimal (example, .10): "
+    output "Enter a coupon discount as decimal (eg. 0.10)."
     input discount
 
-    if discount > 1.0 or discount <= 0 then
-        discount = 0.1
-        output "The discount you entered exceeds 100% or is less than or equal to zero. Thus, the discount is set to 10%."
+    if discount > 1.0 || discount <= 0 then
+        discount = 0.10
+        output "Your input has either exceeded 100% or is less than or equal to 0%."
+        output "Thus, the system has assigned default coupon discount of 10%."
+    else
+        output "The coupon discount has been set to " (discount * 100) + "%."
     endIf
 
-    output "Now let's enter your grocery bill from weeks 1-4."
-    for i = 0 to 4 step 1
-        output "Enter your grocery bill for week " + (i + 1) + ": "
-        input bills[i]
+    output "Now, let's enter grocery bills for weeks 1-4."
+    for i = 0 to WEEKS_IN_MONTH step 1
+        output "Enter your grocery bill for week " + (i + 1) + "."
+        input weeklyBills[i]
+        totalBills = totalBills + weeklyBills[i]
     endFor
 
-    output "Here is a view of your grocery summary."
+    totalBillsWithDiscount = totalBills * (1 - discount)
 
-    for i = 0 to 4 step 1
-        total = total + bills[i]
-    endFor
+    output "The monthly total bill without coupon discount is $" + totalBills + "."
+    output "The weekly average bill without coupon discount is $" + (totalBills / 4) + "."
 
-    avgWeeklyWithoutCoupon = total / 4
-    avgMonthlyWithoutCoupon = avgWeeklyWithoutCoupon * 4
+    output "The monthly total bill with coupon discount is $" + totalBillsWithDiscount + "."
+    output "The weekly average bill with coupon discount is $" + (totalBillsWithDiscount / 4) + "."
 
-    output "Weekly total without coupon: $" + avgWeeklyWithoutCoupon
-    output "Monthly total without coupon: $" + avgMonthlyWithoutCoupon
-
-    totalWithCoupon = total * (1 - discount)
-    avgWeeklyWithCoupon = totalWithCoupon / 4
-    avgMonthlyWithCoupon = avgWeeklyWithCoupon * 4
-
-    output "Weekly total with coupon(" + (discount * 100) + "% discount): $" + avgWeeklyWithCoupon
-    output "Monthly total with coupon(" + (discount * 100) + "% discount): $" + avgMonthlyWithCoupon
+    output "Thank you for using the Grocery Bill Calculator!"
 end

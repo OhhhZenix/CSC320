@@ -18,4 +18,4 @@ The program then prompts the user for the grocery bills for weeks 1 to 4. It cal
 ![An example of the program running and usage](./example.png)
 
 ## Note
-If the discount coupon amount entered exceeds 100% or is less than or equal to zero, it will be automatically set to 10%.
+If the discount coupon amount entered exceeds 100% or is less than or equal to zero, it will be automatically set to 10%. It is worth noting that when forcefully quitting the program, it may not exit properly such as Ctrl-C. Therefore, it is recommended to go through the whole program to ensure a proper exit. 
